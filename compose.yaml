@@ -1,0 +1,27 @@
+version: '3.8'
+services: # コンテナ(service)を複数書ける
+  frontend:
+    build: ./frontend  # ./frontend/Dockerfileを参照してビルドする
+    volumes:
+      - type: bind
+        source: ./frontend
+        target: /app
+      - type: volume
+        source: node_modules_volume
+        target: /app/node_modules
+    ports:
+      - '3000:3000'
+  backend:
+    build: ./backend
+    command: python3 manage.py runserver 0.0.0.0:4989
+    volumes:
+      - type: bind
+        source: ./backend # PCの世界
+        target: /code # Dockerの世界
+    ports:
+      - "4989:4989"
+
+volumes:
+  node_modules_volume:
+
+  
